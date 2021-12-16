@@ -1,17 +1,32 @@
 package govtech.nphc.employeesalarymanagement.model;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Entity
+@Table(name = "Employee")
 public class Employee {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "login")
     private String login;
+
+    @Column(name = "salary")
     private BigDecimal salary;
+
+    @Column(name = "startDate")
     private Date startDate;
 
-    public Employee(){}
+    public Employee(){
+
+    }
 
     public Employee(long id, String name, String login, BigDecimal salary, Date startDate) {
         this.id = id;
