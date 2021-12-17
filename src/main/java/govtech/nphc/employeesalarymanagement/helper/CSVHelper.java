@@ -14,12 +14,13 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CSVHelper {
 
     public static String TYPE = "text/csv";
-    static String[] HEADERs = { "Id", "Title", "Description", "Published" };
+    static String[] HEADERs = { "id", "login", "name", "salary", "startDate" };
 
     public static boolean hasCSVFormat(MultipartFile file) {
 
@@ -30,7 +31,7 @@ public class CSVHelper {
         return true;
     }
 
-    public static List<Employee> csvToTutorials(InputStream is) {
+    public static List<Employee> csvToEmployees(InputStream is) {
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
              CSVParser csvParser = new CSVParser(fileReader,
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
@@ -41,11 +42,11 @@ public class CSVHelper {
 
             for (CSVRecord csvRecord : csvRecords) {
                 Employee employee = new Employee(
-                        Long.parseLong(csvRecord.get("Id")),
-                        csvRecord.get("name"),
+                        Long.parseLong(csvRecord.get("id")),
                         csvRecord.get("login"),
+                        csvRecord.get("name"),
                         new BigDecimal(csvRecord.get("salary")),
-                        new SimpleDateFormat("“yyyy-mm-dd").parse(csvRecord.get("startDate"))
+                        new SimpleDateFormat("yyyy-MM-dd hh:mm").parse(csvRecord.get("startDate"))
                 );
 
                 employees.add(employee);

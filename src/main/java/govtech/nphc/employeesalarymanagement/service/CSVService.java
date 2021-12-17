@@ -17,8 +17,8 @@ public class CSVService {
 
     public void save(MultipartFile file) {
         try {
-            List<Employee> tutorials = CSVHelper.csvToTutorials(file.getInputStream());
-            repository.saveAll(tutorials);
+            List<Employee> employees = CSVHelper.csvToEmployees(file.getInputStream());
+            repository.saveAll(employees);
         } catch (IOException e) {
             throw new RuntimeException("fail to store csv data: " + e.getMessage());
         }
