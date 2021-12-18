@@ -2,6 +2,7 @@ package govtech.nphc.employeesalarymanagement.controller;
 
 import govtech.nphc.employeesalarymanagement.helper.CSVHelper;
 import govtech.nphc.employeesalarymanagement.message.ResponseMessage;
+import govtech.nphc.employeesalarymanagement.model.Employee;
 import govtech.nphc.employeesalarymanagement.service.CSVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Controller
 public class CSVController {
@@ -24,13 +27,16 @@ public class CSVController {
 
         if (CSVHelper.hasCSVFormat(file)) {
             try {
-                fileService.save(file);
-
-                message = "Uploaded the file successfully: " + file.getOriginalFilename();
-                return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+                List<Employee> updateEmployee = fileService.save(file);
+                if (updateEmployee == null) {
+                    message = "Uploaded the file successfully: " + file.getOriginalFilename();
+                    return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage(message));
+                }
+                // TODO: MERGE CONTROLLER SERVICES.
+//                fileService.update(updateEmployee);
             } catch (Exception e) {
-                message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+                message = "Could not upload the file: " + file.getOriginalFilename() + " : " + e.getMessage() + "!";
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
             }
         }
 

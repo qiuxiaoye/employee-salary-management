@@ -13,6 +13,8 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static govtech.nphc.employeesalarymanagement.utils.Utils.isContainLogin;
+
 @RestController
 public class EmployeeController {
 
@@ -255,12 +257,5 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Successfully deleted"));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("No such employee"));
-    }
-
-    private static boolean isContainLogin(List<Employee> employees, String login) {
-        for (Employee e : employees) {
-            if (e.getLogin().equals(login)) return true;
-        }
-        return false;
     }
 }
