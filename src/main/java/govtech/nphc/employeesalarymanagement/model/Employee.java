@@ -2,7 +2,7 @@ package govtech.nphc.employeesalarymanagement.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "Employee")
@@ -22,13 +22,13 @@ public class Employee {
     private BigDecimal salary;
 
     @Column(name = "startDate")
-    private Date startDate;
+    private LocalDate startDate;
 
     public Employee(){
 
     }
 
-    public Employee(long id, String name, String login, BigDecimal salary, Date startDate) {
+    public Employee(long id, String name, String login, BigDecimal salary, LocalDate startDate) {
         this.id = id;
         this.name = name;
         this.login = login;
@@ -68,11 +68,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 

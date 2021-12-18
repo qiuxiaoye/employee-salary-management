@@ -97,26 +97,26 @@ public class EmployeeController {
             }
 
             //filtering (date before)
-            if (filterDateBefore != null) {
-                List<Employee> dateBeforeEmployees = employeeRepository.findAll().stream()
-                        .filter(e -> e.getStartDate().before(filterDateBefore)).collect(Collectors.toList());
-                if (dateBeforeEmployees.isEmpty()) {
-                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-                } else {
-                    return new ResponseEntity<>(dateBeforeEmployees, HttpStatus.OK);
-                }
-            }
-
-            //filtering (define your filters)
-            if (filterDateAfter != null) {
-                List<Employee> dateAfterEmployees = employeeRepository.findAll().stream()
-                        .filter(e -> e.getStartDate().after(filterDateAfter)).collect(Collectors.toList());
-                if (dateAfterEmployees.isEmpty()) {
-                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-                } else {
-                    return new ResponseEntity<>(dateAfterEmployees, HttpStatus.OK);
-                }
-            }
+//            if (filterDateBefore != null) {
+//                List<Employee> dateBeforeEmployees = employeeRepository.findAll().stream()
+//                        .filter(e -> e.getStartDate().before(filterDateBefore)).collect(Collectors.toList());
+//                if (dateBeforeEmployees.isEmpty()) {
+//                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//                } else {
+//                    return new ResponseEntity<>(dateBeforeEmployees, HttpStatus.OK);
+//                }
+//            }
+//
+//            //filtering (define your filters)
+//            if (filterDateAfter != null) {
+//                List<Employee> dateAfterEmployees = employeeRepository.findAll().stream()
+//                        .filter(e -> e.getStartDate().after(filterDateAfter)).collect(Collectors.toList());
+//                if (dateAfterEmployees.isEmpty()) {
+//                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//                } else {
+//                    return new ResponseEntity<>(dateAfterEmployees, HttpStatus.OK);
+//                }
+//            }
 
 //             sort by employee name
             if (sortByNameAsec != null) {

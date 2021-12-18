@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,7 +47,7 @@ public class CSVHelper {
                         csvRecord.get("login"),
                         csvRecord.get("name"),
                         new BigDecimal(csvRecord.get("salary")),
-                        new SimpleDateFormat("yyyy-MM-dd hh:mm").parse(csvRecord.get("startDate"))
+                        LocalDate.parse(csvRecord.get("startDate"))
                 );
 
                 employees.add(employee);
@@ -55,8 +56,6 @@ public class CSVHelper {
             return employees;
         } catch (IOException e) {
             throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
-        } catch (ParseException e) {
-            throw new RuntimeException("fail to parse csvRecord to Date: " + e.getMessage());
         }
     }
 }
