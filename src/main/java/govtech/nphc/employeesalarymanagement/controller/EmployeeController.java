@@ -249,13 +249,12 @@ public class EmployeeController {
 
     //    Delete
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable("id") long id) {
-        try {
+    public ResponseEntity<ResponseMessage> deleteEmployee(@PathVariable("id") long id) {
+        if(employeeRepository.findById(id).isPresent()) {
             employeeRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Successfully deleted"));
         }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("No such employee"));
     }
 
     private static boolean isContainLogin(List<Employee> employees, String login) {
