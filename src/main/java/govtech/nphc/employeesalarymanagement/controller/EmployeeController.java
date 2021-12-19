@@ -3,6 +3,7 @@ package govtech.nphc.employeesalarymanagement.controller;
 import govtech.nphc.employeesalarymanagement.message.ResponseMessage;
 import govtech.nphc.employeesalarymanagement.model.Employee;
 import govtech.nphc.employeesalarymanagement.repository.EmployeeRepository;
+import govtech.nphc.employeesalarymanagement.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,9 @@ public class EmployeeController {
 
     @Autowired
     EmployeeRepository employeeRepository;
+
+    @Autowired
+    EmployeeService employeeService;
 
     //Get
 
@@ -171,11 +175,9 @@ public class EmployeeController {
      */
     @GetMapping("/users/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") long id) {
-        Optional<Employee> employeeData = employeeRepository.findById(id);
-
-        if (employeeData.isPresent()) {
-            return new ResponseEntity<>(employeeData.get(), HttpStatus.OK);
-        } else {
+        try {
+            return new ResponseEntity<>(employeeService.getEmployeeById(id), HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -187,75 +189,39 @@ public class EmployeeController {
      */
     @PostMapping("/users")
     public ResponseEntity<ResponseMessage> createEmployee(@RequestBody Employee employee) {
-
-
-        if (employeeRepository.findById(employee.getId()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("Employee ID already exists"));
+        try {
+            employeeService.create(employee);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Successfully created"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(e.getMessage()));
         }
-
-        if (isContainLogin(employeeRepository.findAll(), employee.getLogin())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("Employee login not unique"));
-        }
-
-        if (employee.getSalary().compareTo(BigDecimal.valueOf(0)) == -1) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("Invalid salary"));
-        }
-
-        if (employee.getStartDate().isAfter(LocalDate.now())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("Invalid date"));
-        }
-
-        Employee postedEmployee = employeeRepository
-                .save(new Employee(
-                        employee.getId(),
-                        employee.getName(),
-                        employee.getLogin(),
-                        employee.getSalary(),
-                        employee.getStartDate()));
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Successfully created"));
-
     }
 
-    //    Update
+
+    /**
+     * CURD Update by id
+     * @param id Long. Employee id.
+     * @param employee
+     * @return ResponseEntity<ResponseMessage>
+     */
     @PutMapping("/users/{id}")
-    public ResponseEntity<ResponseMessage> updateEmployee(@PathVariable("id") long id, @RequestBody Employee employee) {
-        Optional<Employee> employeeData = employeeRepository.findById(id);
-
-        if (employeeData.isPresent()) {
-            Employee emp = employeeData.get();
-
-            // TODO: BUG, NEED TO SEARCH ALL RECORDS EXCEPT UPDATED RECORD
-            if (isContainLogin(employeeRepository.findAll(), employee.getLogin())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("Employee login not unique"));
-            }
-            emp.setLogin(employee.getLogin());
-
-            emp.setName(employee.getName());
-
-            if (employee.getSalary().compareTo(BigDecimal.valueOf(0)) == -1) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("Invalid salary"));
-            }
-            emp.setSalary(employee.getSalary());
-
-            if (employee.getStartDate().isAfter(LocalDate.now())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("Invalid date"));
-            }
-            emp.setStartDate(employee.getStartDate());
-
-            employeeRepository.save(emp);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Successfully updated"));
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("No such employee"));
+    public ResponseEntity<ResponseMessage> updateEmployeeById(@PathVariable("id") long id, @RequestBody Employee employee) {
+        try {
+            employeeService.updateEmployeeById(id, employee);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Successfully updated"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(e.getMessage()));
         }
     }
 
     //    Delete
     @DeleteMapping("/users/{id}")
     public ResponseEntity<ResponseMessage> deleteEmployee(@PathVariable("id") long id) {
-        if(employeeRepository.findById(id).isPresent()) {
-            employeeRepository.deleteById(id);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Successfully deleted"));
+        try {
+            employeeService.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Successfully deleted"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(e.getMessage()));
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("No such employee"));
     }
 }
