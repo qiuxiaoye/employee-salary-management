@@ -1,32 +1,36 @@
 package govtech.nphc.employeesalarymanagement.controller;
 
+
+
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.jupiter.api.Test;
+import org.junit.rules.TemporaryFolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 
 @SpringBootTest
 public class CSVControllerTest {
+
+    @Autowired
+    CSVController csvController;
+
     File file1;
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
     /* executed before every test: create temporary files */
+
     @Before
     public void setUp() {
         try {
-            file1 = folder.newFile( "files/g1test.csv" );
+            file1 = folder.newFile( "g1test.csv" );
         }
         catch( IOException ioe ) {
             System.err.println(
@@ -35,13 +39,15 @@ public class CSVControllerTest {
         }
     }
 
-    @Autowired
-    CSVController csvController;
-
     @Test
-    public void testUploadFile_Success () {
+    public void testUploadFile_Success () throws IOException {
 
-//        MultipartFile multipartFile = new MultipartFile()
 
+        InputStream targetStream = new FileInputStream(file1);
+        MultipartFile multipartFile = new MockMultipartFile("g1test", targetStream);
+
+        csvController.uploadFile(multipartFile);
+
+//        assertThat(csvController).isNotNull();
     }
 }

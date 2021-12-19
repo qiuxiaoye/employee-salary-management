@@ -14,8 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static govtech.nphc.employeesalarymanagement.utils.Utils.isContainLogin;
-import static govtech.nphc.employeesalarymanagement.utils.Utils.isEmptyOrWhiteSpace;
+import static govtech.nphc.employeesalarymanagement.utils.Utils.*;
 
 @Service
 public class CSVService {
@@ -28,11 +27,7 @@ public class CSVService {
             List<Employee> updateEmployees = new ArrayList<>();
             for (Employee employee : employees) {
                 // Check all Employee elements are filled not null/ whitespace.
-                if (employee.getId() == 0
-                        || isEmptyOrWhiteSpace(employee.getName())
-                        || isEmptyOrWhiteSpace(employee.getLogin())
-                        || employee.getSalary() == null
-                        || employee.getStartDate() == null) {
+                if (isNullEmployee(employee)) {
                     throw new RuntimeException("Invalid data input in CSV file.");
                 }
 

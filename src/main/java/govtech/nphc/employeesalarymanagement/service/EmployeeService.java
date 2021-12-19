@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static govtech.nphc.employeesalarymanagement.utils.Utils.isContainLogin;
+import static govtech.nphc.employeesalarymanagement.utils.Utils.*;
 
 @Service
 public class EmployeeService {
@@ -28,6 +28,9 @@ public class EmployeeService {
     public void create(Employee employee) {
         try
         {
+            if (isNullEmployee(employee)) {
+                throw new RuntimeException("Employee param has empty field");
+            }
             if (employeeRepository.findById(employee.getId()).isPresent()) {
                 throw new RuntimeException("Employee ID already exists");
             }
