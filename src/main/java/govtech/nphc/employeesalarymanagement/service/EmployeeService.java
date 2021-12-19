@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static govtech.nphc.employeesalarymanagement.utils.Utils.isContainLogin;
@@ -55,6 +56,10 @@ public class EmployeeService {
     }
 
 
+    /**
+     * Delete Employee by id.
+     * @param id long
+     */
     public void deleteById(long id) {
         try {
             if(employeeRepository.findById(id).isPresent()) {
@@ -66,6 +71,11 @@ public class EmployeeService {
         }
     }
 
+    /**
+     * Get Employee by id.
+     * @param id Long
+     * @return Employee
+     */
     public Employee getEmployeeById(long id) {
         try {
             Optional<Employee> employeeData = employeeRepository.findById(id);
@@ -78,6 +88,11 @@ public class EmployeeService {
         }
     }
 
+    /**
+     * Update employee by id.
+     * @param id Long
+     * @param employee Employee infomation needs to update.
+     */
     public void updateEmployeeById(long id, Employee employee) {
         try {
             Optional<Employee> employeeData = employeeRepository.findById(id);
@@ -112,6 +127,21 @@ public class EmployeeService {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
 
+    public int updateAll(List<Employee> updateEmployee) {
+        int counter = 0; // count total updates
+        try {
+            if (updateEmployee == null) {
+                throw new RuntimeException("No update records.");
+            }
+            for (Employee employee : updateEmployee) {
+                updateEmployeeById(employee.getId(), employee);
+                counter ++;
+            }
+            return counter;
+        } catch (Exception e) {
+            throw new RuntimeException("fail to update: " + e.getMessage());
+        }
     }
 }

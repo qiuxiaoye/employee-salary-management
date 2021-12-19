@@ -4,6 +4,7 @@ import govtech.nphc.employeesalarymanagement.message.ResponseMessage;
 import govtech.nphc.employeesalarymanagement.model.Employee;
 import govtech.nphc.employeesalarymanagement.repository.EmployeeRepository;
 import govtech.nphc.employeesalarymanagement.service.EmployeeService;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,8 +46,8 @@ public class EmployeeController {
             @RequestParam(required = false, defaultValue = "0") Integer offset,
             @RequestParam(required = false, defaultValue = "0") Integer limit,
             @RequestParam(required = false) Boolean sortByNameAsec,
-            @RequestParam(required = false) Date filterDateBefore,
-            @RequestParam(required = false) Date filterDateAfter) {
+            @RequestParam(required = false) LocalDate filterDateBefore,
+            @RequestParam(required = false) LocalDate filterDateAfter) {
 
         try {
             // MinSalary & maxSalary combined search.
@@ -128,26 +129,26 @@ public class EmployeeController {
             }
 
             //filtering (date before)
-//            if (filterDateBefore != null) {
-//                List<Employee> dateBeforeEmployees = employeeRepository.findAll().stream()
-//                        .filter(e -> e.getStartDate().before(filterDateBefore)).collect(Collectors.toList());
-//                if (dateBeforeEmployees.isEmpty()) {
-//                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//                } else {
-//                    return new ResponseEntity<>(dateBeforeEmployees, HttpStatus.OK);
-//                }
-//            }
-//
-//            //filtering (define your filters)
-//            if (filterDateAfter != null) {
-//                List<Employee> dateAfterEmployees = employeeRepository.findAll().stream()
-//                        .filter(e -> e.getStartDate().after(filterDateAfter)).collect(Collectors.toList());
-//                if (dateAfterEmployees.isEmpty()) {
-//                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//                } else {
-//                    return new ResponseEntity<>(dateAfterEmployees, HttpStatus.OK);
-//                }
-//            }
+            if (filterDateBefore != null) {
+                List<Employee> dateBeforeEmployees = employeeRepository.findAll().stream()
+                        .filter(e -> e.getStartDate().isBefore(filterDateBefore)).collect(Collectors.toList());
+                if (dateBeforeEmployees.isEmpty()) {
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                } else {
+                    return new ResponseEntity<>(dateBeforeEmployees, HttpStatus.OK);
+                }
+            }
+
+            //filtering (define your filters)
+            if (filterDateAfter != null) {
+                List<Employee> dateAfterEmployees = employeeRepository.findAll().stream()
+                        .filter(e -> e.getStartDate().isAfter(filterDateAfter)).collect(Collectors.toList());
+                if (dateAfterEmployees.isEmpty()) {
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                } else {
+                    return new ResponseEntity<>(dateAfterEmployees, HttpStatus.OK);
+                }
+            }
 
 //             sort by employee name
             if (sortByNameAsec != null) {
