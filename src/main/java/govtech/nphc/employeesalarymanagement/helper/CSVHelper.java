@@ -11,17 +11,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class CSVHelper {
 
     public static String TYPE = "text/csv";
-    static String[] HEADERs = { "id", "login", "name", "salary", "startDate" };
+    static String[] HEADERs = {"id", "login", "name", "salary", "startDate"};
 
     public static boolean hasCSVFormat(MultipartFile file) {
 
@@ -35,9 +32,9 @@ public class CSVHelper {
     public static List<Employee> csvToEmployees(InputStream is) {
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
              CSVParser csvParser = new CSVParser(fileReader,
-                     CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
+                     CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {
 
-            List<Employee> employees = new ArrayList<Employee>();
+            List<Employee> employees = new ArrayList<>();
 
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 

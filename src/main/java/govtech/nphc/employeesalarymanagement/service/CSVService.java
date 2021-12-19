@@ -12,9 +12,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static govtech.nphc.employeesalarymanagement.utils.Utils.*;
+import static govtech.nphc.employeesalarymanagement.utils.Utils.isContainLogin;
+import static govtech.nphc.employeesalarymanagement.utils.Utils.isNullEmployee;
 
 @Service
 public class CSVService {
@@ -34,7 +34,7 @@ public class CSVService {
                 // duplicated id
                 for (int i = 0; i < employees.size(); i++) {
                     for (int j = i + 1; j < employees.size(); j++) {
-                        if (employees.get(i).getId() == employees.get(j).getId()){
+                        if (employees.get(i).getId() == employees.get(j).getId()) {
                             throw new RuntimeException("Duplicated id in the list");
                         }
                     }

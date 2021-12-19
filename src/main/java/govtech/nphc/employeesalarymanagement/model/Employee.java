@@ -24,7 +24,7 @@ public class Employee {
     @Column(name = "startDate")
     private LocalDate startDate;
 
-    public Employee(){
+    public Employee() {
 
     }
 

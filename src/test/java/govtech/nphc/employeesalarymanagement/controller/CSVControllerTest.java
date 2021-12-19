@@ -1,7 +1,6 @@
 package govtech.nphc.employeesalarymanagement.controller;
 
 
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 
 @SpringBootTest
@@ -30,17 +32,16 @@ public class CSVControllerTest {
     @Before
     public void setUp() {
         try {
-            file1 = folder.newFile( "g1test.csv" );
-        }
-        catch( IOException ioe ) {
+            file1 = folder.newFile("g1test.csv");
+        } catch (IOException ioe) {
             System.err.println(
                     "error creating temporary test file in " +
-                            this.getClass().getSimpleName() );
+                            this.getClass().getSimpleName());
         }
     }
 
     @Test
-    public void testUploadFile_Success () throws IOException {
+    public void testUploadFile_Success() throws IOException {
 
 
         InputStream targetStream = new FileInputStream(file1);

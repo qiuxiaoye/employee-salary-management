@@ -1,11 +1,8 @@
 package govtech.nphc.employeesalarymanagement.service;
 
-import govtech.nphc.employeesalarymanagement.message.ResponseMessage;
 import govtech.nphc.employeesalarymanagement.model.Employee;
 import govtech.nphc.employeesalarymanagement.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -13,7 +10,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static govtech.nphc.employeesalarymanagement.utils.Utils.*;
+import static govtech.nphc.employeesalarymanagement.utils.Utils.isContainLogin;
+import static govtech.nphc.employeesalarymanagement.utils.Utils.isNullEmployee;
 
 @Service
 public class EmployeeService {
@@ -23,11 +21,11 @@ public class EmployeeService {
 
     /**
      * CURD Create service for Employee.
+     *
      * @param employee Employee entity.
      */
     public void create(Employee employee) {
-        try
-        {
+        try {
             if (isNullEmployee(employee)) {
                 throw new RuntimeException("Employee param has empty field");
             }
@@ -61,11 +59,12 @@ public class EmployeeService {
 
     /**
      * Delete Employee by id.
+     *
      * @param id long
      */
     public void deleteById(long id) {
         try {
-            if(employeeRepository.findById(id).isPresent()) {
+            if (employeeRepository.findById(id).isPresent()) {
                 employeeRepository.deleteById(id);
             }
             throw new RuntimeException("No such employee");
@@ -76,6 +75,7 @@ public class EmployeeService {
 
     /**
      * Get Employee by id.
+     *
      * @param id Long
      * @return Employee
      */
@@ -93,7 +93,8 @@ public class EmployeeService {
 
     /**
      * Update employee by id.
-     * @param id Long
+     *
+     * @param id       Long
      * @param employee Employee infomation needs to update.
      */
     public void updateEmployeeById(long id, Employee employee) {
@@ -140,7 +141,7 @@ public class EmployeeService {
             }
             for (Employee employee : updateEmployee) {
                 updateEmployeeById(employee.getId(), employee);
-                counter ++;
+                counter++;
             }
             return counter;
         } catch (Exception e) {

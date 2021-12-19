@@ -28,12 +28,13 @@ public class EmployeeController {
 
     //Get
 
-    /** getAllEmployees Fetch List of Employees
+    /**
+     * getAllEmployees Fetch List of Employees
      *
-     * @param minSalary Minimum salary, returns employee with more salary.
-     * @param maxSalary Maximum salary, returns employee with less salary.
-     * @param offset Starting offset of results to return. Default is 0 at start.
-     * @param limit - Max number of results to return. Default is 0 no limit.
+     * @param minSalary        Minimum salary, returns employee with more salary.
+     * @param maxSalary        Maximum salary, returns employee with less salary.
+     * @param offset           Starting offset of results to return. Default is 0 at start.
+     * @param limit            - Max number of results to return. Default is 0 no limit.
      * @param sortByNameAsec
      * @param filterDateBefore
      * @param filterDateAfter
@@ -156,8 +157,7 @@ public class EmployeeController {
                         .sorted(Comparator.comparing(Employee::getName)).collect(Collectors.toList());
                 if (sortEmployeeByName.isEmpty()) {
                     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-                }
-                else if (sortByNameAsec == true) {
+                } else if (sortByNameAsec == true) {
                     return new ResponseEntity<>(sortEmployeeByName, HttpStatus.OK);
                 }
             }
@@ -171,6 +171,7 @@ public class EmployeeController {
 
     /**
      * CRUD Get user by id
+     *
      * @param id Long id.
      * @return ResponseEntity<Employee>
      */
@@ -185,6 +186,7 @@ public class EmployeeController {
 
     /**
      * CRUD Create
+     *
      * @param employee
      * @return ResponseEntity<ResponseMessage>
      */
@@ -201,7 +203,8 @@ public class EmployeeController {
 
     /**
      * CURD Update by id
-     * @param id Long. Employee id.
+     *
+     * @param id       Long. Employee id.
      * @param employee
      * @return ResponseEntity<ResponseMessage>
      */

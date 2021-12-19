@@ -16,8 +16,8 @@ public class Utils {
         return string == null || string.trim().isEmpty();
     }
 
-    public static boolean isNullEmployee (Employee employee) {
-        return  (employee.getId() == 0
+    public static boolean isNullEmployee(Employee employee) {
+        return (employee.getId() == 0
                 || isEmptyOrWhiteSpace(employee.getName())
                 || isEmptyOrWhiteSpace(employee.getLogin())
                 || employee.getSalary() == null

@@ -1,13 +1,11 @@
 package govtech.nphc.employeesalarymanagement.controller;
 
-import govtech.nphc.employeesalarymanagement.message.ResponseMessage;
 import govtech.nphc.employeesalarymanagement.model.Employee;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -19,20 +17,20 @@ public class EmployeeControllerTest {
     EmployeeController employeeController;
 
     @Test
-    public void testCreateEmployee_Success () {
+    public void testCreateEmployee_Success() {
         Employee employee = new Employee();
-        employee.setId(1);
+        employee.setId(5);
         employee.setLogin("1");
         employee.setName("1");
         employee.setSalary(BigDecimal.valueOf(1));
-        employee.setStartDate(LocalDate.of(2000, 01, 01));
+        employee.setStartDate(LocalDate.of(2000, 1, 1));
 
-        Assert.assertEquals(employeeController.createEmployee(employee).getStatusCode(),
-                HttpStatus.CREATED);
+        Assertions.assertEquals(employeeController.createEmployee(employee).getBody().getMessage(),
+                "Successfully created");
     }
 
     @Test
-    public void testCreateEmployee_FailWithEmptyField () {
+    public void testCreateEmployee_FailWithEmptyField() {
         Employee employee1 = new Employee();
         employee1.setId(1);
         employee1.setLogin("");
@@ -40,12 +38,12 @@ public class EmployeeControllerTest {
         employee1.setSalary(BigDecimal.valueOf(1));
         employee1.setStartDate(LocalDate.of(2000, 01, 01));
 
-        Assert.assertEquals(employeeController.createEmployee(employee1).getBody().getMessage(),
+        Assertions.assertEquals(employeeController.createEmployee(employee1).getBody().getMessage(),
                 "Employee param has empty field");
     }
 
     @Test
-    public void testCreateEmployee_FailWithInvalidData () {
+    public void testCreateEmployee_FailWithInvalidData() {
         Employee employee2 = new Employee();
         employee2.setId(1);
         employee2.setLogin("1");
@@ -53,12 +51,12 @@ public class EmployeeControllerTest {
         employee2.setSalary(BigDecimal.valueOf(-1));
         employee2.setStartDate(LocalDate.of(2000, 01, 01));
 
-        Assert.assertEquals(employeeController.createEmployee(employee2).getBody().getMessage(),
+        Assertions.assertEquals(employeeController.createEmployee(employee2).getBody().getMessage(),
                 "Invalid salary");
     }
 
     @Test
-    public void testUpdateEmployee_Success () {
+    public void testUpdateEmployee_Success() {
         Employee savedEmployee = new Employee();
         savedEmployee.setId(1L);
         savedEmployee.setLogin("1");
@@ -73,7 +71,7 @@ public class EmployeeControllerTest {
         employeeController.createEmployee(savedEmployee);
 
 
-        Assert.assertEquals(employeeController.updateEmployeeById(1, updateEmployee).getBody().getMessage(),
+        Assertions.assertEquals(employeeController.updateEmployeeById(1, updateEmployee).getBody().getMessage(),
                 "Successfully updated");
     }
 }
