@@ -27,13 +27,15 @@ public class CSVController {
 
         if (CSVHelper.hasCSVFormat(file)) {
             try {
-                List<Employee> updateEmployee = fileService.save(file);
-                if (updateEmployee == null) {
+                List<Employee> updateEmployees = fileService.save(file);
+                if (updateEmployees == null) {
                     message = "Uploaded the file successfully: " + file.getOriginalFilename();
                     return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage(message));
                 }
-                // TODO: MERGE CONTROLLER SERVICES.
-//                fileService.update(updateEmployee);
+                if (fileService.updateAll(updateEmployees) == 0) {
+                    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Success but no data updated."));
+                }
+                return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Data created or uploaded."));
             } catch (Exception e) {
                 message = "Could not upload the file: " + file.getOriginalFilename() + " : " + e.getMessage() + "!";
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));

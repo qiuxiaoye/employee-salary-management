@@ -225,7 +225,7 @@ public class EmployeeController {
             Employee emp = employeeData.get();
 
             // TODO: BUG, NEED TO SEARCH ALL RECORDS EXCEPT UPDATED RECORD
-            if (!emp.getLogin().equals(employee.getLogin())) {
+            if (isContainLogin(employeeRepository.findAll(), employee.getLogin())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("Employee login not unique"));
             }
             emp.setLogin(employee.getLogin());
